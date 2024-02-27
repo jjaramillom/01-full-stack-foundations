@@ -3,12 +3,14 @@ import { Links, LiveReload, Scripts } from '@remix-run/react'
 import faviconAssetUrl from './assets/favicon.svg'
 import { KCDShop } from './kcdshop.tsx'
 import fontStylesheetUrl from './styles/font.css'
+import tailwindUrl from './styles/tailwind.css'
 // 🐨 Import the tailwind stylesheet here
 
 export const links: LinksFunction = () => {
 	return [
 		{ rel: 'icon', type: 'image/svg+xml', href: faviconAssetUrl },
 		{ rel: 'stylesheet', href: fontStylesheetUrl },
+		{ rel: 'stylesheet', href: tailwindUrl },
 		// 🐨 Add the tailwind stylesheet to the links array here
 	]
 }

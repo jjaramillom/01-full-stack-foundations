@@ -21,12 +21,12 @@ export async function loader({ params }: DataFunctionArgs) {
 	})
 }
 
-export async function action({ params }: DataFunctionArgs) {
-	// 🐨 get the formData from the request
-	// 🐨 get the intent from the formData
-	// 🐨 if the intent is "delete" then proceed
-	// 🐨 if the intent is not, then throw a 400 Response
-	// 💰 you can use invariantResponse from '#app/utils/misc.tsx' for this
+export async function action({ params, request }: DataFunctionArgs) {
+	const formData = await request.formData()
+	const intent = formData.get('intent')
+	if (intent !== 'delete') { 
+		throw new Response(`${intent} is not supported`, { status: 400 })
+	}
 	db.note.delete({ where: { id: { equals: params.noteId } } })
 	return redirect(`/users/${params.username}/notes`)
 }
@@ -47,9 +47,17 @@ export default function NoteRoute() {
 					<Button
 						type="submit"
 						variant="destructive"
-						// 🐨 add a name="intent" and value="delete" to this button
+						name="intent"
+						value="delete"
 					>
 						Delete
+					</Button>
+					<Button
+						type="submit"
+						name="intent"
+						value="favorite"
+					>
+						Favorite
 					</Button>
 				</Form>
 				<Button asChild>

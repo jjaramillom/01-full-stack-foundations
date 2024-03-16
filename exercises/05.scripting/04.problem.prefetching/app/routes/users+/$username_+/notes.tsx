@@ -46,10 +46,9 @@ export default function NotesRoute() {
 						<ul className="overflow-y-auto overflow-x-hidden pb-12">
 							{data.notes.map(note => (
 								<li key={note.id} className="p-1 pr-0">
-									<NavLink
+									<NavLink prefetch='intent'
 										to={note.id}
 										preventScrollReset
-										// 🐨 add a prefetch="intent" to this link
 										className={({ isActive }) =>
 											cn(navLinkDefaultClassName, isActive && 'bg-accent')
 										}

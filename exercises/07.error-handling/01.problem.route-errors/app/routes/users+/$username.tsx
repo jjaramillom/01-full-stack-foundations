@@ -1,5 +1,10 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { Link, useLoaderData, type MetaFunction } from '@remix-run/react'
+import {
+	Link,
+	useLoaderData,
+	useRouteError,
+	type MetaFunction,
+} from '@remix-run/react'
 import { db } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
 
@@ -44,7 +49,9 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 	]
 }
 
-// 🐨 export an ErrorBoundary here
-// 🐨 get the error from useRouteError()
-// 💰 If you'd like it to look nice, you can use this class name:
-// className="container mx-auto flex h-full w-full items-center justify-center bg-destructive p-20 text-h2 text-destructive-foreground"
+export const ErrorBoundary = () => {
+	const error = useRouteError()
+	console.error(error)
+
+	return <div>Something bad happened</div>
+}

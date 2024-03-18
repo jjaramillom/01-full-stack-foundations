@@ -1,7 +1,9 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
 import {
 	Link,
+	isRouteErrorResponse,
 	useLoaderData,
+	useParams,
 	useRouteError,
 	type MetaFunction,
 } from '@remix-run/react'
@@ -49,21 +51,17 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 
 export function ErrorBoundary() {
 	const error = useRouteError()
-	// 🐨 get the params so we can display the username that is causing the error
-	// 💰 useParams comes from @remix-run/react
+	const params = useParams()
 	console.error(error)
 
-	// 🐨 create the error message that will be displayed to the user
-	// you can default it to the existing error message we have below.
-
-	// 🐨 if the error is a 404 Response error, then display a different message
-	// that explains no user by the username given was found.
-	// 💰 isRouteErrorResponse comes from @remix-run/react
+	let errorMessage = 'Oh no, something went wrong. Sorry about that.'
+	if (isRouteErrorResponse(error) && error.status === 404) {
+		errorMessage = `User with username "${params.username}" does not exist.`
+	}
 
 	return (
 		<div className="container mx-auto flex h-full w-full items-center justify-center bg-destructive p-20 text-h2 text-destructive-foreground">
-			{/* 🐨 display the error message here */}
-			<p>Oh no, something went wrong. Sorry about that.</p>
+			<p>{errorMessage}</p>
 		</div>
 	)
 }
